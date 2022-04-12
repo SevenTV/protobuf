@@ -1,6 +1,6 @@
 all: build_deps proto
 
-deps:
+deps: build_deps
 	yarn
 	go install github.com/bufbuild/buf/cmd/buf@v1.3.1
 
