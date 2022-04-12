@@ -1,12 +1,18 @@
 syntax = "proto3";
 
-package twitch_chat.v1;
+package twitch_edge.v1;
 
-option go_package = "twitch_chat/v1";
+option go_package = "twitch_edge/v1";
 
-service TwitchChatService {
-  rpc Register(RegisterRequest) returns (stream RegisterResponse) {}
-  rpc PublishEvent(PublishEventRequest) returns (PublishEventResponse) {}
+service TwitchEdgeService {
+  rpc RegisterEdge(RegisterEdgeRequest)
+    returns (stream RegisterEdgeResponse) {}
+
+  rpc PublishEdgeEvent(PublishEdgeEventRequest)
+    returns (PublishEdgeEventResponse) {}
+
+  rpc JoinChannel(JoinChannelRequest)
+    returns (JoinChannelResponse) {}
 }
 
 
@@ -22,11 +28,11 @@ enum EventType {
   EVENT_TYPE_PART_CHANNEL = 3;
 }
 
-message RegisterRequest {
+message RegisterEdgeRequest {
   string node_name = 1;
 }
 
-message RegisterResponse {
+message RegisterEdgeResponse {
   message LoginPayload {
     Channel channel = 1;
     string oauth = 2;
@@ -46,7 +52,7 @@ message RegisterResponse {
   }
 }
 
-message PublishEventRequest {
+message PublishEdgeEventRequest {
   message LoginPayload {
     Channel channel = 1;
   }
@@ -65,6 +71,14 @@ message PublishEventRequest {
   }
 }
 
-message PublishEventResponse {
+message PublishEdgeEventResponse {
+  bool success = 1;
+}
+
+message JoinChannelRequest {
+  Channel channel = 1;
+}
+
+message JoinChannelResponse {
   bool success = 1;
 }
