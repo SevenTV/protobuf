@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package twitch_chat.v1;
 
-option go_package = "twitch_chat/protobuf";
+option go_package = "twitch_chat/v1";
 
 service TwitchChatService {
   rpc Register(RegisterRequest) returns (stream RegisterResponse) {}
