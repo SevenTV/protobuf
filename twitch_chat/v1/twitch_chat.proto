@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package twitch_chat.v1;
+
+option go_package = "twitch_chat/protobuf";
+
+service TwitchChatService {
+  rpc Register(RegisterRequest) returns (stream RegisterResponse) {}
+  rpc PublishEvent(PublishEventRequest) returns (PublishEventResponse) {}
+}
+
+
+message Channel {
+  string id = 1;
+  string login = 2;
+}
+
+enum EventType {
+  EVENT_TYPE_UNSPECIFIED = 0;
+  EVENT_TYPE_LOGIN = 1;
+  EVENT_TYPE_JOIN_CHANNEL = 2;
+  EVENT_TYPE_PART_CHANNEL = 3;
+}
+
+message RegisterRequest {
+  string node_name = 1;
+}
+
+message RegisterResponse {
+  message LoginPayload {
+    Channel channel = 1;
+    string oauth = 2;
+  }
+  message JoinChannelPayload {
+    repeated Channel channels = 1;
+  }
+  message PartChannelPayload {
+    repeated Channel channels = 1;
+  }
+
+  EventType type = 1;
+  oneof payload {
+    LoginPayload login_payload = 2;
+    JoinChannelPayload join_channel_payload = 3;
+    PartChannelPayload part_channel_payload = 4; 
+  }
+}
+
+message PublishEventRequest {
+  message LoginPayload {
+    Channel channel = 1;
+  }
+  message JoinChannelPayload {
+    repeated Channel channels = 1;
+  }
+  message PartChannelPayload {
+    repeated Channel channels = 1;
+  }
+
+  EventType type = 1;
+  oneof payload {
+    LoginPayload login_payload = 2;
+    JoinChannelPayload join_channel_payload = 3;
+    PartChannelPayload part_channel_payload = 4; 
+  }
+}
+
+message PublishEventResponse {
+  bool success = 1;
+}
