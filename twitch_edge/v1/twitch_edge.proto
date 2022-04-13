@@ -13,6 +13,9 @@ service TwitchEdgeService {
 
   rpc JoinChannel(JoinChannelRequest)
     returns (JoinChannelResponse) {}
+
+  rpc JoinChannelEdge(JoinChannelEdgeRequest)
+    returns (JoinChannelEdgeResponse) {}
 }
 
 
@@ -82,4 +85,12 @@ message JoinChannelRequest {
 
 message JoinChannelResponse {
   bool success = 1;
+}
+
+message JoinChannelEdgeRequest {
+  Channel channel = 1;
+}
+
+message JoinChannelEdgeResponse {
+  bool allowed = 1;
 }
