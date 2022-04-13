@@ -19,6 +19,7 @@ service TwitchEdgeService {
 message Channel {
   string id = 1;
   string login = 2;
+  int32 priority = 3;
 }
 
 enum EventType {
@@ -76,7 +77,7 @@ message PublishEdgeEventResponse {
 }
 
 message JoinChannelRequest {
-  Channel channel = 1;
+  repeated Channel channels = 1;
 }
 
 message JoinChannelResponse {
