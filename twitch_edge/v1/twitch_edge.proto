@@ -8,8 +8,8 @@ service TwitchEdgeService {
   rpc RegisterEdge(RegisterEdgeRequest)
     returns (stream RegisterEdgeResponse) {}
 
-  rpc PublishEdgeEvent(PublishEdgeEventRequest)
-    returns (PublishEdgeEventResponse) {}
+  rpc PublishEdgeChannelEvent(PublishEdgeChannelEventRequest)
+    returns (PublishEdgeChannelEventResponse) {}
 
   rpc JoinChannel(JoinChannelRequest)
     returns (JoinChannelResponse) {}
@@ -25,18 +25,19 @@ message Channel {
   int32 priority = 3;
 }
 
-enum EventType {
-  EVENT_TYPE_UNSPECIFIED = 0;
-  EVENT_TYPE_LOGIN = 1;
-  EVENT_TYPE_JOIN_CHANNEL = 2;
-  EVENT_TYPE_PART_CHANNEL = 3;
-}
 
 message RegisterEdgeRequest {
   string node_name = 1;
 }
 
 message RegisterEdgeResponse {
+  enum EventType {
+    EVENT_TYPE_UNSPECIFIED = 0;
+    EVENT_TYPE_LOGIN = 1;
+    EVENT_TYPE_JOIN_CHANNEL = 2;
+    EVENT_TYPE_PART_CHANNEL = 3;
+  }
+
   message LoginPayload {
     Channel channel = 1;
     string oauth = 2;
@@ -56,26 +57,19 @@ message RegisterEdgeResponse {
   }
 }
 
-message PublishEdgeEventRequest {
-  message LoginPayload {
-    Channel channel = 1;
-  }
-  message JoinChannelPayload {
-    repeated Channel channels = 1;
-  }
-  message PartChannelPayload {
-    repeated Channel channels = 1;
+message PublishEdgeChannelEventRequest {
+  enum EventType {
+    EVENT_TYPE_UNSPECIFIED = 0;
+    EVENT_TYPE_UNKNOWN_CHANNEL = 1;
+    EVENT_TYPE_SUSPENDED_CHANNEL = 2;
+    EVENT_TYPE_BANNED = 3;
   }
 
   EventType type = 1;
-  oneof payload {
-    LoginPayload login_payload = 2;
-    JoinChannelPayload join_channel_payload = 3;
-    PartChannelPayload part_channel_payload = 4; 
-  }
+  Channel channel = 2;
 }
 
-message PublishEdgeEventResponse {
+message PublishEdgeChannelEventResponse {
   bool success = 1;
 }
 
