@@ -1,0 +1,37 @@
+version: 2
+updates:
+  - package-ecosystem: gomod
+    directory: "/"
+    target-branch: dev
+    schedule:
+      interval: weekly
+    reviewers:
+      - troykomodo
+  - package-ecosystem: github-actions
+    directory: "/"
+    target-branch: dev
+    schedule:
+      interval: weekly
+    reviewers:
+      - troykomodo
+  - package-ecosystem: docker
+    directory: "/build"
+    target-branch: dev
+    schedule:
+      interval: weekly
+    reviewers:
+      - troykomodo
+  - package-ecosystem: gomod
+    directory: "/scripts/gen_github_action_config"
+    target-branch: dev
+    schedule:
+      interval: weekly
+    reviewers:
+      - troykomodo
+  - package-ecosystem: npm
+    directory: "/docs"
+    target-branch: dev
+    schedule:
+      interval: monthly
+    reviewers:
+      - troykomodo

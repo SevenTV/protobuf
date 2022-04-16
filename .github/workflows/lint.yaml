@@ -1,0 +1,47 @@
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        go: [1.18]
+
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v3.0.0
+        with:
+          go-version: ${{ matrix.go }}
+        id: go
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1.1.2
+
+      - name: install deps
+        run: make deps
+
+      - uses: actionsx/prettier@v2
+        with:
+          args: --check .
+
+      - name: linting
+        run: make lint
+
+      - name: compile
+        run: make compile
