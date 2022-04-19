@@ -1,21 +1,21 @@
 syntax = "proto3";
 
-package twitch_edge.v1;
+package waterhose.v1;
 
-option go_package = "twitch_edge/v1";
+option go_package = "waterhose/v1";
 
-service TwitchEdgeService {
-  rpc RegisterEdge(RegisterEdgeRequest)
-    returns (stream RegisterEdgeResponse) {}
+service WaterHoseService {
+  rpc RegisterSlave(RegisterSlaveRequest)
+    returns (stream RegisterSlaveResponse) {}
 
-  rpc PublishEdgeChannelEvent(PublishEdgeChannelEventRequest)
-    returns (PublishEdgeChannelEventResponse) {}
+  rpc PublishSlaveChannelEvent(PublishSlaveChannelEventRequest)
+    returns (PublishSlaveChannelEventResponse) {}
 
   rpc JoinChannel(JoinChannelRequest)
     returns (JoinChannelResponse) {}
 
-  rpc JoinChannelEdge(JoinChannelEdgeRequest)
-    returns (JoinChannelEdgeResponse) {}
+  rpc SlaveJoinLimit(SlaveJoinLimitRequest)
+    returns (SlaveJoinLimitResponse) {}
 }
 
 
@@ -23,14 +23,16 @@ message Channel {
   string id = 1;
   string login = 2;
   int32 priority = 3;
+  bool use_anonymous = 4;
+  bool bot_banned = 5;
 }
 
 
-message RegisterEdgeRequest {
-  string node_name = 1;
+message RegisterSlaveRequest {
+  string slave_name = 1;
 }
 
-message RegisterEdgeResponse {
+message RegisterSlaveResponse {
   enum EventType {
     EVENT_TYPE_UNSPECIFIED = 0;
     EVENT_TYPE_LOGIN = 1;
@@ -57,19 +59,20 @@ message RegisterEdgeResponse {
   }
 }
 
-message PublishEdgeChannelEventRequest {
+message PublishSlaveChannelEventRequest {
   enum EventType {
     EVENT_TYPE_UNSPECIFIED = 0;
     EVENT_TYPE_UNKNOWN_CHANNEL = 1;
     EVENT_TYPE_SUSPENDED_CHANNEL = 2;
-    EVENT_TYPE_BANNED = 3;
+    EVENT_TYPE_BOT_BANNED = 3;
+    EVENT_TYPE_JOINED = 4;
   }
 
   EventType type = 1;
   Channel channel = 2;
 }
 
-message PublishEdgeChannelEventResponse {
+message PublishSlaveChannelEventResponse {
   bool success = 1;
 }
 
@@ -81,10 +84,10 @@ message JoinChannelResponse {
   bool success = 1;
 }
 
-message JoinChannelEdgeRequest {
+message SlaveJoinLimitRequest {
   Channel channel = 1;
 }
 
-message JoinChannelEdgeResponse {
+message SlaveJoinLimitResponse {
   bool allowed = 1;
 }

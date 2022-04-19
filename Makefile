@@ -9,7 +9,7 @@ build_deps:
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1
 
 compile:
-	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative twitch_edge/v1/*.proto
+	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative waterhose/v1/*.proto
 
 lint:
 	buf lint
